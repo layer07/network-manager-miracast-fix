@@ -69,6 +69,10 @@ USE AT YOUR OWN RISK.  NOT RECOMMENDED FOR PRODUCTION USE!
   configured with "ipv6.method: shared"
 * nmtui now offers a "Show password" checkbox in the dialog that prompts for
   secrets when activating a connection, matching the connection editor.
+* Add a "wifi-p2p.go-intent" property to control the GO intent used during
+  P2P group formation. Wi-Fi Display sources can set a low value so the sink
+  becomes the group owner, which fixes Miracast on adapters like MT7921
+  whose P2P group-owner mode does not work with WFD sinks.
 
 =============================================
 NetworkManager-1.56
