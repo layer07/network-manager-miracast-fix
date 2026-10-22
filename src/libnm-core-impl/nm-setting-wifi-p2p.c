@@ -32,12 +32,13 @@
 
 /*****************************************************************************/
 
-NM_GOBJECT_PROPERTIES_DEFINE_BASE(PROP_PEER, PROP_WPS_METHOD, PROP_WFD_IES, );
+NM_GOBJECT_PROPERTIES_DEFINE_BASE(PROP_PEER, PROP_WPS_METHOD, PROP_WFD_IES, PROP_GO_INTENT, );
 
 typedef struct {
     char   *peer;
     GBytes *wfd_ies;
     guint32 wps_method;
+    gint32  go_intent;
 } NMSettingWifiP2PPrivate;
 
 struct _NMSettingWifiP2P {
@@ -103,6 +104,23 @@ nm_setting_wifi_p2p_get_wfd_ies(NMSettingWifiP2P *setting)
     g_return_val_if_fail(NM_IS_SETTING_WIFI_P2P(setting), NULL);
 
     return NM_SETTING_WIFI_P2P_GET_PRIVATE(setting)->wfd_ies;
+}
+
+/**
+ * nm_setting_wifi_p2p_get_go_intent:
+ * @setting: the #NMSettingWifiP2P
+ *
+ * Returns: the #NMSettingWifiP2P:go-intent property of the setting. A value of
+ *   -1 means that NetworkManager uses its built-in default.
+ *
+ * Since: 1.58
+ **/
+int
+nm_setting_wifi_p2p_get_go_intent(NMSettingWifiP2P *setting)
+{
+    g_return_val_if_fail(NM_IS_SETTING_WIFI_P2P(setting), -1);
+
+    return NM_SETTING_WIFI_P2P_GET_PRIVATE(setting)->go_intent;
 }
 
 /*****************************************************************************/
@@ -244,6 +262,31 @@ nm_setting_wifi_p2p_class_init(NMSettingWifiP2PClass *setting_wifi_p2p_class)
                                              NM_SETTING_PARAM_FUZZY_IGNORE,
                                              NMSettingWifiP2P,
                                              _priv.wfd_ies);
+
+    /**
+     * NMSettingWifiP2P:go-intent:
+     *
+     * The GO (Group Owner) intent to use during P2P group formation, in the
+     * range 0 to 15. A higher value expresses a stronger desire for the local
+     * device to become the group owner. The special value -1 (the default)
+     * lets NetworkManager pick a built-in default.
+     *
+     * Wi-Fi Display (Miracast) sources should typically set a low value so that
+     * the display sink becomes the group owner, which is required by some
+     * Wi-Fi adapters whose P2P group-owner mode is unreliable.
+     *
+     * Since: 1.58
+     */
+    _nm_setting_property_define_direct_int32(properties_override,
+                                             obj_properties,
+                                             NM_SETTING_WIFI_P2P_GO_INTENT,
+                                             PROP_GO_INTENT,
+                                             -1,
+                                             15,
+                                             -1,
+                                             NM_SETTING_PARAM_FUZZY_IGNORE,
+                                             NMSettingWifiP2P,
+                                             _priv.go_intent);
 
     g_object_class_install_properties(object_class, _PROPERTY_ENUMS_LAST, obj_properties);
 

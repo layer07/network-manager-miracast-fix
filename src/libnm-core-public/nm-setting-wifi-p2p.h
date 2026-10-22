@@ -36,6 +36,7 @@ G_BEGIN_DECLS
 #define NM_SETTING_WIFI_P2P_PEER       "peer"
 #define NM_SETTING_WIFI_P2P_WPS_METHOD "wps-method"
 #define NM_SETTING_WIFI_P2P_WFD_IES    "wfd-ies"
+#define NM_SETTING_WIFI_P2P_GO_INTENT  "go-intent"
 
 typedef struct _NMSettingWifiP2PClass NMSettingWifiP2PClass;
 
@@ -53,6 +54,9 @@ NMSettingWirelessSecurityWpsMethod nm_setting_wifi_p2p_get_wps_method(NMSettingW
 
 NM_AVAILABLE_IN_1_16
 GBytes *nm_setting_wifi_p2p_get_wfd_ies(NMSettingWifiP2P *setting);
+
+NM_AVAILABLE_IN_1_58
+int nm_setting_wifi_p2p_get_go_intent(NMSettingWifiP2P *setting);
 
 G_END_DECLS
 

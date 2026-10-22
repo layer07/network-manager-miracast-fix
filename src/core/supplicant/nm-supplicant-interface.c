@@ -2960,11 +2960,17 @@ void
 nm_supplicant_interface_p2p_connect(NMSupplicantInterface *self,
                                     const char            *peer,
                                     const char            *wps_method,
-                                    const char            *wps_pin)
+                                    const char            *wps_pin,
+                                    gint32                 go_intent)
 {
     GVariantBuilder builder;
 
     g_return_if_fail(NM_IS_SUPPLICANT_INTERFACE(self));
+
+    /* A negative value means "unset"; fall back to the historic default of 7,
+     * which makes the local device strongly prefer becoming the group owner. */
+    if (go_intent < 0 || go_intent > 15)
+        go_intent = 7;
 
     g_variant_builder_init(&builder, G_VARIANT_TYPE_VARDICT);
 
@@ -2974,7 +2980,7 @@ nm_supplicant_interface_p2p_connect(NMSupplicantInterface *self,
     g_variant_builder_add(&builder, "{sv}", "peer", g_variant_new_object_path(peer));
     g_variant_builder_add(&builder, "{sv}", "join", g_variant_new_boolean(FALSE));
     g_variant_builder_add(&builder, "{sv}", "persistent", g_variant_new_boolean(FALSE));
-    g_variant_builder_add(&builder, "{sv}", "go_intent", g_variant_new_int32(7));
+    g_variant_builder_add(&builder, "{sv}", "go_intent", g_variant_new_int32(go_intent));
 
     _dbus_connection_call_simple(self,
                                  NM_WPAS_DBUS_IFACE_INTERFACE_P2P_DEVICE,

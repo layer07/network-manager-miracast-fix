@@ -2747,6 +2747,10 @@
     <setting name="wifi-p2p"
              gtype="NMSettingWifiP2P"
              >
+        <property name="go-intent"
+                  dbus-type="i"
+                  gprop-type="gint"
+                  />
         <property name="peer"
                   dbus-type="s"
                   gprop-type="gchararray"

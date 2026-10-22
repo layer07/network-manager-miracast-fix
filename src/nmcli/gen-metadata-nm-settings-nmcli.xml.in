@@ -2329,6 +2329,11 @@
         <property name="wfd-ies"
                   nmcli-description="The Wi-Fi Display (WFD) Information Elements (IEs) to set. Wi-Fi Display requires a protocol specific information element to be set in certain Wi-Fi frames. These can be specified here for the purpose of establishing a connection. This setting is only useful when implementing a Wi-Fi Display client."
                   format="bytes" />
+        <property name="go-intent"
+                  nmcli-description="The GO (Group Owner) intent to use during P2P group formation, in the range 0 to 15. A higher value expresses a stronger desire for the local device to become the group owner. The special value -1 (the default) lets NetworkManager pick a built-in default. Wi-Fi Display (Miracast) sources should typically set a low value so that the display sink becomes the group owner, which is required by some Wi-Fi adapters whose P2P group-owner mode is unreliable."
+                  format="integer"
+                  values="-1 - 15"
+                  special-values="default (-1)" />
     </setting>
     <setting name="wimax" >
         <property name="mac-address"
